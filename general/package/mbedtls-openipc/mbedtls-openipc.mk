@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MBEDTLS_OPENIPC_VERSION = 2.25.0
-MBEDTLS_OPENIPC_SITE = $(call github,ARMmbed,mbedtls,v$(MBEDTLS_OPENIPC_VERSION))
+MBEDTLS_OPENIPC_VERSION = 3.4.0
+MBEDTLS_OPENIPC_SITE = $(call github,Mbed-TLS,mbedtls,v$(MBEDTLS_OPENIPC_VERSION))
 MBEDTLS_OPENIPC_CONF_OPTS = \
 	-DENABLE_PROGRAMS=$(if $(BR2_PACKAGE_MBEDTLS_OPENIPC_PROGRAMS),ON,OFF) \
 	-DENABLE_TESTING=OFF
@@ -15,13 +15,13 @@ MBEDTLS_OPENIPC_LICENSE_FILES = apache-2.0.txt
 
 define MBEDTLS_ENABLE_SRTP
 	$(SED) "s://#define MBEDTLS_SSL_DTLS_SRTP:#define MBEDTLS_SSL_DTLS_SRTP:" \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 	$(SED) "s:#define MBEDTLS_SSL_CBC_RECORD_SPLITTING://#define MBEDTLS_SSL_CBC_RECORD_SPLITTING:" \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 	$(SED) "s:#define MBEDTLS_ECP_DP_SECP224K1_ENABLED://#define MBEDTLS_ECP_DP_SECP224K1_ENABLED:" \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 	$(SED) "s:#define MBEDTLS_ECP_DP_SECP256K1_ENABLED://#define MBEDTLS_ECP_DP_SECP256K1_ENABLED:" \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 endef
 MBEDTLS_OPENIPC_POST_PATCH_HOOKS += MBEDTLS_ENABLE_SRTP
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -44,7 +44,7 @@ MBEDTLS_OPENIPC_CONF_OPTS += -DENABLE_ZLIB_SUPPORT=ON
 MBEDTLS_OPENIPC_DEPENDENCIES += zlib
 define MBEDTLS_OPENIPC_ENABLE_ZLIB
 	$(SED) "s://#define MBEDTLS_ZLIB_SUPPORT:#define MBEDTLS_ZLIB_SUPPORT:" \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 endef
 MBEDTLS_OPENIPC_POST_PATCH_HOOKS += MBEDTLS_ENABLE_ZLIB
 else
@@ -53,11 +53,11 @@ endif
 
 define MBEDTLS_OPENIPC_DISABLE_ASM
 	$(SED) '/^#define MBEDTLS_AESNI_C/d' \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 	$(SED) '/^#define MBEDTLS_HAVE_ASM/d' \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 	$(SED) '/^#define MBEDTLS_PADLOCK_C/d' \
-		$(@D)/include/mbedtls/config.h
+		$(@D)/include/mbedtls/mbedtls_config.h
 endef
 
 # ARM in thumb mode breaks debugging with asm optimizations

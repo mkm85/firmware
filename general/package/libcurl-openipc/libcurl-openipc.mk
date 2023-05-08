@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBCURL_OPENIPC_VERSION = 7.76.0
+LIBCURL_OPENIPC_VERSION = 7.88.1
 LIBCURL_OPENIPC_SOURCE = curl-$(LIBCURL_OPENIPC_VERSION).tar.xz
 LIBCURL_OPENIPC_SITE = https://curl.haxx.se/download
 LIBCURL_OPENIPC_DEPENDENCIES = host-pkgconf \
@@ -45,10 +45,10 @@ LIBCURL_OPENIPC_DEPENDENCIES += openssl
 # Fix it by setting LD_LIBRARY_PATH to something sensible so those libs
 # are found first.
 LIBCURL_OPENIPC_CONF_ENV += LD_LIBRARY_PATH=$(if $(LD_LIBRARY_PATH),$(LD_LIBRARY_PATH):)/lib:/usr/lib
-LIBCURL_OPENIPC_CONF_OPTS += --with-ssl=$(STAGING_DIR)/usr \
+LIBCURL_OPENIPC_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr \
 	--with-ca-path=/etc/ssl/certs
 else
-LIBCURL_OPENIPC_CONF_OPTS += --without-ssl
+LIBCURL_OPENIPC_CONF_OPTS += --without-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL_OPENIPC_GNUTLS),y)
@@ -137,6 +137,15 @@ else
 LIBCURL_OPENIPC_CONF_OPTS += --disable-proxy
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_OPENIPC_RTSP_SUPPORT),y)
+LIBCURL_OPENIPC_CONF_OPTS += \
+	--enable-rtsp
+else
+LIBCURL_OPENIPC_CONF_OPTS += \
+	--disable-rtsp
+endif
+
+
 ifeq ($(BR2_PACKAGE_LIBCURL_OPENIPC_EXTRA_PROTOCOLS_FEATURES),y)
 LIBCURL_OPENIPC_CONF_OPTS += \
 	--enable-dict \
@@ -145,7 +154,6 @@ LIBCURL_OPENIPC_CONF_OPTS += \
 	--enable-ldap \
 	--enable-ldaps \
 	--enable-pop3 \
-	--enable-rtsp \
 	--enable-smb \
 	--enable-smtp \
 	--enable-telnet \
@@ -158,7 +166,6 @@ LIBCURL_OPENIPC_CONF_OPTS += \
 	--disable-ldap \
 	--disable-ldaps \
 	--disable-pop3 \
-	--disable-rtsp \
 	--disable-smb \
 	--disable-telnet \
 	--disable-tftp

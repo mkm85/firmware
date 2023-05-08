@@ -31,6 +31,13 @@ config BR2_PACKAGE_LIBCURL_OPENIPC_COOKIES_SUPPORT
 	help
 	  Enable support for cookies.
 
+config BR2_PACKAGE_LIBCURL_OPENIPC_RTSP_SUPPORT
+    bool "enable rtsp protocol"
+	default y
+	help
+	  Enable the following extra protocols and features:
+	  - RTSP
+
 config BR2_PACKAGE_LIBCURL_OPENIPC_EXTRA_PROTOCOLS_FEATURES
 	bool "enable extra protocols and features"
 	default y
@@ -40,7 +47,6 @@ config BR2_PACKAGE_LIBCURL_OPENIPC_EXTRA_PROTOCOLS_FEATURES
 	  - POP3 / IMAP / SMTP
 	  - Telnet
 	  - TFTP
-	  - RTSP
 	  - SMB / CIFS
 	  - DICT
 	  - Gopher
